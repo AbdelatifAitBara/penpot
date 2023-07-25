@@ -9,7 +9,6 @@
    [app.common.colors :as clr]
    [app.common.types.file :as ctf]
    [app.main.data.workspace :as dw]
-   [app.main.data.workspace.changes :as dch]
    [app.main.data.workspace.libraries :as dwl]
    [app.main.data.workspace.shapes :as dwsh]
    [app.main.data.workspace.state-helpers :as wsh]
@@ -81,10 +80,10 @@
 
       (ptk/emit!
        store
-       (dch/update-shapes [(:id shape1')]
-                          (fn [shape]
-                            (merge shape {:fill-color clr/test
-                                          :fill-opacity 0.5})))
+       (dwsh/update-shapes [(:id shape1')]
+                           (fn [shape]
+                             (merge shape {:fill-color clr/test
+                                           :fill-opacity 0.5})))
        :the/end))))
 
 (t/deftest test-touched-children-add
@@ -333,10 +332,10 @@
 
       (ptk/emit!
        store
-       (dch/update-shapes [(:id shape1')]
-                          (fn [shape]
-                            (merge shape {:fill-color clr/test
-                                          :fill-opacity 0.5})))
+       (dwsh/update-shapes [(:id shape1')]
+                           (fn [shape]
+                             (merge shape {:fill-color clr/test
+                                           :fill-opacity 0.5})))
        :the/end))))
 
 (t/deftest test-touched-nested-upper
@@ -425,10 +424,10 @@
 
       (ptk/emit!
        store
-       (dch/update-shapes [(:id shape1')]
-                          (fn [shape]
-                            (merge shape {:fill-color clr/test
-                                          :fill-opacity 0.5})))
+       (dwsh/update-shapes [(:id shape1')]
+                           (fn [shape]
+                             (merge shape {:fill-color clr/test
+                                           :fill-opacity 0.5})))
        :the/end))))
 
 (t/deftest test-touched-nested-lower-near
@@ -516,10 +515,10 @@
 
       (ptk/emit!
        store
-       (dch/update-shapes [(:id shape2')]
-                          (fn [shape]
-                            (merge shape {:fill-color clr/test
-                                          :fill-opacity 0.5})))
+       (dwsh/update-shapes [(:id shape2')]
+                           (fn [shape]
+                             (merge shape {:fill-color clr/test
+                                           :fill-opacity 0.5})))
        :the/end))))
 
 (t/deftest test-touched-nested-lower-remote
@@ -604,10 +603,10 @@
 
       (ptk/emit!
        store
-       (dch/update-shapes [(:id shape2')]
-                          (fn [shape]
-                            (merge shape {:fill-color clr/test
-                                          :fill-opacity 0.5})))
+       (dwsh/update-shapes [(:id shape2')]
+                           (fn [shape]
+                             (merge shape {:fill-color clr/test
+                                           :fill-opacity 0.5})))
        (dwl/update-component (:id instance2))
        :the/end))))
 
@@ -665,10 +664,10 @@
 
       (ptk/emit!
        store
-       (dch/update-shapes [(:id shape1')]
-                          (fn [shape]
-                            (merge shape {:fill-color clr/test
-                                          :fill-opacity 0.5})))
+       (dwsh/update-shapes [(:id shape1')]
+                           (fn [shape]
+                             (merge shape {:fill-color clr/test
+                                           :fill-opacity 0.5})))
        (dwl/reset-component (:id instance1))
        :the/end))))
 
@@ -918,10 +917,10 @@
 
       (ptk/emit!
        store
-       (dch/update-shapes [(:id shape2)]
-                          (fn [shape]
-                            (merge shape {:fill-color clr/test
-                                          :fill-opacity 0.5})))
+       (dwsh/update-shapes [(:id shape2)]
+                           (fn [shape]
+                             (merge shape {:fill-color clr/test
+                                           :fill-opacity 0.5})))
        (dwl/reset-component (:id instance2))
        :the/end))))
 
@@ -1009,10 +1008,10 @@
 
       (ptk/emit!
        store
-       (dch/update-shapes [(:id shape1')]
-                          (fn [shape]
-                            (merge shape {:fill-color clr/test
-                                          :fill-opacity 0.5})))
+       (dwsh/update-shapes [(:id shape1')]
+                           (fn [shape]
+                             (merge shape {:fill-color clr/test
+                                           :fill-opacity 0.5})))
        (dwl/reset-component (:id instance2))
        :the/end))))
 
@@ -1100,7 +1099,7 @@
 ;;
 ;;       (ptk/emit!
 ;;        store
-;;        (dch/update-shapes [(:id shape2')]
+;;        (dwsh/update-shapes [(:id shape2')]
 ;;                           (fn [shape]
 ;;                             (merge shape {:fill-color clr/test
 ;;                                           :fill-opacity 0.5})))
@@ -1195,10 +1194,10 @@
 
       (ptk/emit!
        store
-       (dch/update-shapes [(:id shape2')]
-                          (fn [shape]
-                            (merge shape {:fill-color clr/test
-                                          :fill-opacity 0.5})))
+       (dwsh/update-shapes [(:id shape2')]
+                           (fn [shape]
+                             (merge shape {:fill-color clr/test
+                                           :fill-opacity 0.5})))
        (dwl/update-component (:id instance2))
        (dwl/reset-component (:id instance1))
        :the/end))))
@@ -1291,10 +1290,10 @@
 
       (ptk/emit!
        store
-       (dch/update-shapes [(:id shape1')]
-                          (fn [shape]
-                            (merge shape {:fill-color clr/test
-                                          :fill-opacity 0.5})))
+       (dwsh/update-shapes [(:id shape1')]
+                           (fn [shape]
+                             (merge shape {:fill-color clr/test
+                                           :fill-opacity 0.5})))
        (dwl/update-component (:id instance1))
        :the/end))))
 
@@ -1389,10 +1388,10 @@
 
       (ptk/emit!
        store
-       (dch/update-shapes [(:id shape1')]
-                          (fn [shape]
-                            (merge shape {:fill-color clr/test
-                                          :fill-opacity 0.5})))
+       (dwsh/update-shapes [(:id shape1')]
+                           (fn [shape]
+                             (merge shape {:fill-color clr/test
+                                           :fill-opacity 0.5})))
        (dwl/update-component-sync (:id instance1) (:id file))
        :the/end))))
 
@@ -1488,13 +1487,13 @@
 
       (ptk/emit!
        store
-       (dch/update-shapes [(:id shape1')]
-                          (fn [shape]
-                            (merge shape {:fill-color clr/test
-                                          :stroke-width 0.5})))
-       (dch/update-shapes [(:id shape1'')]
-                          (fn [shape]
-                            (merge shape {:stroke-width 0.2})))
+       (dwsh/update-shapes [(:id shape1')]
+                           (fn [shape]
+                             (merge shape {:fill-color clr/test
+                                           :stroke-width 0.5})))
+       (dwsh/update-shapes [(:id shape1'')]
+                           (fn [shape]
+                             (merge shape {:stroke-width 0.2})))
        (dwl/update-component-sync (:id instance1) (:id file))
        :the/end))))
 
@@ -1892,10 +1891,10 @@
 
       (ptk/emit!
        store
-       (dch/update-shapes [(:id shape1')]
-                          (fn [shape]
-                            (merge shape {:fill-color clr/test
-                                          :fill-opacity 0.5})))
+       (dwsh/update-shapes [(:id shape1')]
+                           (fn [shape]
+                             (merge shape {:fill-color clr/test
+                                           :fill-opacity 0.5})))
        (dwl/update-component-sync (:id instance1) (thp/id :lib1))
        :the/end))))
 
@@ -2010,10 +2009,10 @@
 
       (ptk/emit!
        store
-       (dch/update-shapes [(:id shape1')]
-                          (fn [shape]
-                            (merge shape {:fill-color clr/test
-                                          :fill-opacity 0.5})))
+       (dwsh/update-shapes [(:id shape1')]
+                           (fn [shape]
+                             (merge shape {:fill-color clr/test
+                                           :fill-opacity 0.5})))
        (dwl/update-component-sync (:id instance2) (:id file))
        :the/end))))
 
@@ -2128,10 +2127,10 @@
 
       (ptk/emit!
        store
-       (dch/update-shapes [(:id shape2')]
-                          (fn [shape]
-                            (merge shape {:fill-color clr/test
-                                          :fill-opacity 0.5})))
+       (dwsh/update-shapes [(:id shape2')]
+                           (fn [shape]
+                             (merge shape {:fill-color clr/test
+                                           :fill-opacity 0.5})))
        (dwl/update-component (:id instance1))
        (dwl/update-component-sync (:id instance2) (:id file))
        :the/end))))
@@ -2249,7 +2248,7 @@
 ;;
 ;;       (ptk/emit!
 ;;        store
-;;        (dch/update-shapes [(:id shape2')]
+;;        (dwsh/update-shapes [(:id shape2')]
 ;;                           (fn [shape]
 ;;                             (merge shape {:fill-color clr/test
 ;;                                           :fill-opacity 0.5})))
