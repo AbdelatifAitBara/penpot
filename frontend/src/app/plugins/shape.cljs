@@ -7,6 +7,7 @@
 (ns app.plugins.shape
   "RPC for plugins runtime."
   (:require
+   [app.common.data :as d]
    [app.common.data.macros :as dm]
    [app.common.files.helpers :as cfh]
    [app.common.record :as crc]
@@ -86,7 +87,8 @@
 
   (addGridLayout [self]
     (let [id (get-data self :id)]
-      (st/emit! (dwsl/create-layout-from-id id :grid :from-frame? true :calculate-params? false)))))
+      (st/emit! (dwsl/create-layout-from-id id :grid :from-frame? true :calculate-params? false))
+      (grid/grid-layout-proxy (obj/get self "_data")))))
 
 (crc/define-properties!
   ShapeProxy
@@ -235,9 +237,18 @@
             (obj/unset! "addFlexLayout")))
 
       (cond-> (cfh/text-shape? data)
-        (crc/add-properties!
-         {:name "characters"
-          :get #(get-state % :content txt/content->text)
-          :set (fn [self value]
-                 (let [id (get-data self :id)]
-                   (st/emit! (dwc/update-shapes [id] #(txt/change-text % value)))))}))))
+        (-> (crc/add-properties!
+             {:name "characters"
+              :get #(get-state % :content txt/content->text)
+              :set (fn [self value]
+                     (let [id (get-data self :id)]
+                       (st/emit! (dwc/update-shapes [id] #(txt/change-text % value)))))})
+
+            (crc/add-properties!
+             {:name "growType"
+              :get #(get-state % :grow-type d/name)
+              :set (fn [self value]
+                     (let [id (get-data self :id)
+                           value (keyword value)]
+                       (when (contains? value #{:auto-width :auto-height :fixed})
+                         (st/emit! (dwc/update-shapes [id] #(assoc % :grow-type value))))))})))))
