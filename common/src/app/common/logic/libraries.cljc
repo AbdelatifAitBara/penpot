@@ -1991,16 +1991,16 @@
 
         instantiate-component
         #(generate-instantiate-component changes
-                                             objects
-                                             file-id
-                                             (:component-id component-root)
-                                             pos
-                                             page
-                                             libraries
-                                             (:id component-root)
-                                             parent-id
-                                             frame-id
-                                             {})
+                                         objects
+                                         file-id
+                                         (:component-id component-root)
+                                         pos
+                                         page
+                                         libraries
+                                         (:id component-root)
+                                         parent-id
+                                         frame-id
+                                         {})
 
         restore-component
         #(let [restore (prepare-restore-component changes library-data (:component-id component-root) page delta (:id component-root) parent-id frame-id)]
