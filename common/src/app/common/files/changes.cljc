@@ -747,7 +747,9 @@
 ;; any component, so that it needs to be synced immediately to the
 ;; main component. Return the ids of the components that need sync.
 
-(defmulti components-changed (fn [_ change] (:type change)))
+(defmulti components-changed (fn [_ change] 
+                               (println "----" change)
+                               (:type change)))
 
 (defmethod components-changed :mod-obj
   [file-data {:keys [id page-id component-id operations]}]
@@ -755,15 +757,25 @@
                      ; We need to trigger a sync if the shape has changed any
                      ; attribute that participates in components synchronization.
                      (and (= (:type operation) :set)
-                          (get ctk/sync-attrs (:attr operation))))
+                       (get ctk/sync-attrs (:attr operation))))
         any-sync? (some need-sync? operations)]
+    (println "xxxxxxxxxxxxxx" (when any-sync?
+                                (if page-id
+                                  (let [page (ctpl/get-page file-data page-id)
+                                        shape-and-parents (map #(ctn/get-shape page %)
+                                                            (cons id (cfh/get-parent-ids (:objects page) id)))
+                                        xform (comp (filter :main-instance) ; Select shapes that are main component instances
+                                                (map :component-id))]
+                                    (into #{} xform shape-and-parents))
+                                  (when component-id
+                                    #{component-id}))))
     (when any-sync?
       (if page-id
         (let [page (ctpl/get-page file-data page-id)
               shape-and-parents (map #(ctn/get-shape page %)
-                                     (cons id (cfh/get-parent-ids (:objects page) id)))
+                                  (cons id (cfh/get-parent-ids (:objects page) id)))
               xform (comp (filter :main-instance) ; Select shapes that are main component instances
-                          (map :component-id))]
+                      (map :component-id))]
           (into #{} xform shape-and-parents))
         (when component-id
           #{component-id})))))

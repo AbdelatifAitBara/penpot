@@ -833,12 +833,13 @@
      (watch [_ state _]
        (let [current-file-id (:current-file-id state)
              undo-id         (js/Symbol)]
+         (println "launch-component-sync" component-id)
          (rx/of
-          (dwu/start-undo-transaction undo-id)
-          (sync-file current-file-id file-id :components component-id undo-group)
-          (when (not= current-file-id file-id)
-            (sync-file file-id file-id :components component-id undo-group))
-          (dwu/commit-undo-transaction undo-id)))))))
+           (dwu/start-undo-transaction undo-id)
+           (sync-file current-file-id file-id :components component-id undo-group)
+           (when (not= current-file-id file-id)
+             (sync-file file-id file-id :components component-id undo-group))
+           (dwu/commit-undo-transaction undo-id)))))))
 
 (defn update-component-thumbnail
   "Update the thumbnail of the component with the given id, in the
@@ -977,16 +978,16 @@
          (let [file            (wsh/get-file state file-id)
                libraries       (wsh/get-libraries state)
                current-file-id (:current-file-id state)
-
+               _ (println "cll/generate-sync-file-changes" asset-id)
                changes         (cll/generate-sync-file-changes
-                                (pcb/empty-changes it)
-                                undo-group
-                                asset-type
-                                file-id
-                                asset-id
-                                library-id
-                                libraries
-                                current-file-id)
+                                 (pcb/empty-changes it)
+                                 undo-group
+                                 asset-type
+                                 file-id
+                                 asset-id
+                                 library-id
+                                 libraries
+                                 current-file-id)
 
                find-frames     (fn [change]
                                  (->> (ch/frames-changed file change)

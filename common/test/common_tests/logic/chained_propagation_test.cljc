@@ -60,7 +60,7 @@
         file'      (thf/apply-changes file changes-update-color)
         page'      (thf/current-page file')
         shape'     (thf/get-shape file' :component-1-main-child)
-        component  (thf/get-component  file' :component-1)
+        component  (thf/get-component  file' :comp-1)
         file'_id   (:id file')
         libraries' {file'_id file'}
 
@@ -70,26 +70,43 @@
                            nil
                            :components
                            file'_id
-                           (:id component)
+                           (:id (thf/get-component  file' :comp-1))
                            file'_id
                            libraries'
                            file'_id))
 
-        components_changed (ch/components-changed file' {:id (:id component-1-main-child)
-                                                         :page-id (:id page)
-                                                         :component-id (:id component)
-                                                         :operations [{:type :set
-                                                                       :attr
-                                                                       :fills
-                                                                       :val [{:fill-color "#FABADA" :fill-opacity 1}]
-                                                                       :ignore-geometry false
-                                                                       :ignore-touched false}]})
-        _ (println "components_changed" components_changed)
+        ;; components_changed (ch/components-changed (:data file') {:id (:id shape)
+        ;;                                                          :page-id (:id page)
+        ;;                                                          :component-id (:id component)
+        ;;                                                          :type :mod-obj
+        ;;                                                          :operations [{:type :set
+        ;;                                                                        :attr
+        ;;                                                                        :fills
+        ;;                                                                        :val [{:fill-color "#FABADA" :fill-opacity 1}]
+        ;;                                                                        :ignore-geometry false
+        ;;                                                                        :ignore-touched false}]})
+
+        ;; _ (println "components_changed" (:id component) (:id shape) components_changed)
 
         file'' (thf/apply-changes file' changes-sync)
 
        ;; Get
-        page'' (thf/current-page file'')]
+        page'' (thf/current-page file'')
+        file''_id   (:id file'')
+        libraries'' {file''_id file''}
+
+        ;; Changes to propagate the color change to copies
+        changes-sync' (-> (pcb/empty-changes)
+                          (cll/generate-sync-file-changes
+                            nil
+                            :components
+                            file''_id
+                            (:id (thf/get-component  file'' :comp-2))
+                            file''_id
+                            libraries''
+                            file''_id))
+        file''' (thf/apply-changes file'' changes-sync')
+        page''' (thf/current-page file'')]
 
     ;; (println "---->"(-> shape
     ;;                     :name))
@@ -97,11 +114,12 @@
     ;;                     :name))
     ;; generate-sync-shape-direct
 
-    (thd/dump-page page [:touched :fills])
+    (thd/dump-page page [:touched ])
     (println "------111")
-    (thd/dump-page page' [:touched :fills])
+    (thd/dump-page page' [:touched ])
     (println "------222")
-    (thd/dump-page page'' [:touched :fills])
-
+    (thd/dump-page page'' [:touched ])
+    (println "------333")
+    (thd/dump-page page''' [:touched ])
     ;; Check
     (t/is false)))
